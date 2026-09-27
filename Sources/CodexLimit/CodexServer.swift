@@ -13,7 +13,14 @@ enum CodexServer {
             .split(separator: ":")
             .filter { !$0.isEmpty }
             .map { String($0) + "/codex" }
-        for path in paths + ["/Applications/ChatGPT.app/Contents/Resources/codex"] {
+        // Newer Codex Desktop releases bundle the CLI inside codex-cli/CodexCLI.app.
+        let bundledPaths = [
+            "/Applications/ChatGPT.app/Contents/Resources/codex",
+            "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+            "/Applications/Codex.app/Contents/Resources/codex",
+            "/Applications/Codex.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
+        ]
+        for path in paths + bundledPaths {
             if FileManager.default.isExecutableFile(atPath: path) {
                 return URL(fileURLWithPath: path)
             }
@@ -40,7 +47,7 @@ enum CodexServer {
         }
 
         let initialize = """
-        {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"clientInfo":{"name":"codex-limit","version":"0.1.3"},"capabilities":{}}}
+        {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"clientInfo":{"name":"codex-limit","version":"0.1.4"},"capabilities":{}}}
         """
         guard send(initialize, to: input.fileHandleForWriting) else { return nil }
 

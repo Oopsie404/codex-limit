@@ -3,7 +3,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 APP="$ROOT/dist/Codex Limit.app"
-DMG="$ROOT/dist/CodexLimit-macos-0.1.3.dmg"
+DMG="$ROOT/dist/CodexLimit-macos-0.1.4.dmg"
 STAGE="$(mktemp -d -t codex-limit-dmg)"
 trap 'rm -rf "$STAGE"' EXIT
 
